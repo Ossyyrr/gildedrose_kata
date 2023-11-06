@@ -1,5 +1,5 @@
-import 'package:gildedrose_kata/model/item.dart';
-import 'package:gildedrose_kata/update_item_strategy.dart';
+import 'package:gildedrose_kata/core/interface/update_item_strategy.dart';
+import 'package:gildedrose_kata/core/model/item.dart';
 
 class UpdateDefaultStrategy extends UpdateItemStrategy {
   @override

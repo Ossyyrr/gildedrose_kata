@@ -1,4 +1,4 @@
-import 'package:gildedrose_kata/model/item.dart';
+import 'package:gildedrose_kata/core/model/item.dart';
 
 abstract class UpdateItemStrategy {
   void update(Item item);
