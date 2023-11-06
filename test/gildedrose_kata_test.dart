@@ -148,4 +148,16 @@ void main() {
     expect(item.sellIn, randomSellIn - 1);
     expect(item.quality, 0);
   });
+
+  test('should decrease double Quality for conjured objects', () {
+    var randomSellIn = 5;
+    var randomQuality = 44;
+
+    Item item = Item('Conjured', randomSellIn, randomQuality);
+
+    GildedRose([item]).updateQuality();
+
+    expect(item.sellIn, randomSellIn - 1);
+    expect(item.quality, 42);
+  });
 }

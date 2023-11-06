@@ -1,4 +1,5 @@
 import 'package:gildedrose_kata/model/item.dart';
+import 'package:gildedrose_kata/model/update_conjure_strategy.dart';
 import 'package:gildedrose_kata/update_aged_brie_strategy.dart';
 import 'package:gildedrose_kata/update_backstage_strategy.dart';
 import 'package:gildedrose_kata/update_default_strategy.dart';
@@ -14,6 +15,7 @@ class GildedRose {
     UpdateSulfurasStrategy.itemName: UpdateSulfurasStrategy(),
     UpdateAgedBrieStrategy.itemName: UpdateAgedBrieStrategy(),
     UpdateBackstageStrategy.itemName: UpdateBackstageStrategy(),
+    UpdateConjureStrategy.itemName: UpdateConjureStrategy(),
   };
 
   void updateQuality() {
