@@ -8,54 +8,50 @@ class GildedRose {
   int minQuality = 0;
   int maxQuality = 50;
   int baseQualityChange = 1;
+
+  void updateAgedBrie(Item item) {
+    item.sellIn = decreaseSellIn(item.sellIn);
+    item.quality = increaseQuality(item.quality);
+    if (hasSellIn(item.sellIn)) {
+      item.quality = increaseQuality(item.quality);
+      return;
+    }
+    if (!hasSellIn(item.sellIn)) return;
+    item.quality = decreaseQuality(item.quality);
+  }
+
+  void updateBackstage(Item item) {
+    item.sellIn = decreaseSellIn(item.sellIn);
+    item.quality = increaseQuality(item.quality);
+    if (closeToExpire(item.sellIn)) {
+      item.quality = increaseQuality(item.quality);
+    }
+
+    if (tooCloseToExpire(item.sellIn)) {
+      item.quality = increaseQuality(item.quality);
+    }
+    if (!hasSellIn(item.sellIn)) return;
+    item.quality = minQuality;
+    item.quality = decreaseQuality(item.quality);
+  }
+
+  void updateDefault(Item item) {
+    item.sellIn = decreaseSellIn(item.sellIn);
+    item.quality = decreaseQuality(item.quality); //reasignar
+    if (!hasSellIn(item.sellIn)) return;
+    item.quality = decreaseQuality(item.quality);
+  }
+
   void updateQuality() {
     for (var item in items) {
-      if (isAgedBrie(item.name) || isBackstage(item.name)) {
-        if (qualityLessLimit(item.quality)) {
-          item.quality = increaseQuality(item.quality);
-
-          if (isBackstage(item.name)) {
-            if (closeToExpire(item.sellIn)) {
-              if (qualityLessLimit(item.quality)) {
-                item.quality = increaseQuality(item.quality);
-              }
-            }
-
-            if (tooCloseToExpire(item.sellIn)) {
-              if (qualityLessLimit(item.quality)) {
-                item.quality = increaseQuality(item.quality);
-              }
-            }
-          }
-        }
+      if (isSulfuras(item.name)) {
+        return;
+      } else if (isAgedBrie(item.name)) {
+        updateAgedBrie(item);
+      } else if (isBackstage(item.name)) {
+        updateBackstage(item);
       } else {
-        if (hasQuality(item.quality)) {
-          if (!isSulfuras(item.name)) {
-            item.quality = decreaseQuality(item.quality); //reasignar
-          }
-        }
-      }
-
-      if (!isSulfuras(item.name)) {
-        item.sellIn = decreaseSellIn(item.sellIn);
-      }
-
-      if (hasSellIn(item.sellIn)) {
-        if (!isAgedBrie(item.name)) {
-          if (!isBackstage(item.name)) {
-            if (hasQuality(item.quality)) {
-              if (!isSulfuras(item.name)) {
-                item.quality = decreaseQuality(item.quality);
-              }
-            }
-          } else {
-            item.quality = minQuality;
-          }
-        } else {
-          if (qualityLessLimit(item.quality)) {
-            item.quality = increaseQuality(item.quality);
-          }
-        }
+        updateDefault(item);
       }
     }
   }
@@ -66,8 +62,20 @@ class GildedRose {
   int decreaseSellIn(int sellIn) => sellIn - 1;
 
   bool qualityLessLimit(int quality) => quality < maxQuality;
-  int decreaseQuality(int quality) => quality - baseQualityChange;
-  int increaseQuality(int quality) => quality + baseQualityChange;
+  int decreaseQuality(int quality) {
+    if (hasQuality(quality)) {
+      return quality - baseQualityChange;
+    }
+    return quality;
+  }
+
+  int increaseQuality(int quality) {
+    if (qualityLessLimit(quality)) {
+      return quality + baseQualityChange;
+    }
+    return quality;
+  }
+
   bool hasQuality(int quality) => quality > minQuality;
 
   bool isSulfuras(String name) => name == "Sulfuras, Hand of Ragnaros";
