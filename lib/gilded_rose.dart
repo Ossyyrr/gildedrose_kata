@@ -1,69 +1,75 @@
+import 'package:gildedrose_kata/model/item.dart';
+
 class GildedRose {
   List<Item> items;
 
   GildedRose(this.items);
 
+  int minQuality = 0;
   void updateQuality() {
-    for (int i = 0; i < items.length; i++) {
-      if (items[i].name != "Aged Brie" &&
-          items[i].name != "Backstage passes to a TAFKAL80ETC concert") {
-        if (items[i].quality > 0) {
-          if (items[i].name != "Sulfuras, Hand of Ragnaros") {
-            items[i].quality = items[i].quality - 1;
+    for (var item in items) {
+      if (!isAgedBrie(item.name) && !isBackstage(item.name)) {
+        if (hasQuality(item.quality)) {
+          if (!isSulfuras(item.name)) {
+            item.quality = decreaseQuality(item.quality); //reasignar
           }
         }
       } else {
-        if (items[i].quality < 50) {
-          items[i].quality = items[i].quality + 1;
+        if (qualityLessLimit(item.quality)) {
+          item.quality = increaseQuality(item.quality);
 
-          if (items[i].name == "Backstage passes to a TAFKAL80ETC concert") {
-            if (items[i].sellIn < 11) {
-              if (items[i].quality < 50) {
-                items[i].quality = items[i].quality + 1;
+          if (isBackstage(item.name)) {
+            if (closeToExpire(item.sellIn)) {
+              if (qualityLessLimit(item.quality)) {
+                item.quality = increaseQuality(item.quality);
               }
             }
 
-            if (items[i].sellIn < 6) {
-              if (items[i].quality < 50) {
-                items[i].quality = items[i].quality + 1;
+            if (tooCloseToExpire(item.sellIn)) {
+              if (qualityLessLimit(item.quality)) {
+                item.quality = increaseQuality(item.quality);
               }
             }
           }
         }
       }
 
-      if (items[i].name != "Sulfuras, Hand of Ragnaros") {
-        items[i].sellIn = items[i].sellIn - 1;
+      if (!isSulfuras(item.name)) {
+        item.sellIn = decreaseSellIn(item.sellIn);
       }
 
-      if (items[i].sellIn < 0) {
-        if (items[i].name != "Aged Brie") {
-          if (items[i].name != "Backstage passes to a TAFKAL80ETC concert") {
-            if (items[i].quality > 0) {
-              if (items[i].name != "Sulfuras, Hand of Ragnaros") {
-                items[i].quality = items[i].quality - 1;
+      if (hasSellIn(item.sellIn)) {
+        if (!isAgedBrie(item.name)) {
+          if (!isBackstage(item.name)) {
+            if (hasQuality(item.quality)) {
+              if (!isSulfuras(item.name)) {
+                item.quality = decreaseQuality(item.quality);
               }
             }
           } else {
-            items[i].quality = items[i].quality - items[i].quality;
+            item.quality = minQuality;
           }
         } else {
-          if (items[i].quality < 50) {
-            items[i].quality = items[i].quality + 1;
+          if (qualityLessLimit(item.quality)) {
+            item.quality = increaseQuality(item.quality);
           }
         }
       }
     }
   }
-}
 
-class Item {
-  String name;
-  int sellIn;
-  int quality;
+  bool hasSellIn(int sellIn) => sellIn < 0;
+  bool tooCloseToExpire(int sellIn) => sellIn <= 5;
+  bool closeToExpire(int sellIn) => sellIn <= 10;
+  int decreaseSellIn(int sellIn) => sellIn - 1;
 
-  Item(this.name, this.sellIn, this.quality);
+  bool qualityLessLimit(int quality) => quality < 50;
+  int decreaseQuality(int quality) => quality - 1;
+  int increaseQuality(int quality) => quality + 1;
+  bool hasQuality(int quality) => quality > minQuality;
 
-  @override
-  String toString() => '$name, $sellIn, $quality';
+  bool isSulfuras(String name) => name == "Sulfuras, Hand of Ragnaros";
+  bool isBackstage(String name) =>
+      name == "Backstage passes to a TAFKAL80ETC concert";
+  bool isAgedBrie(String name) => name == "Aged Brie";
 }

@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:gildedrose_kata/gilded_rose.dart';
+import 'package:gildedrose_kata/model/item.dart';
 import 'package:test/test.dart';
 
 void main() {
