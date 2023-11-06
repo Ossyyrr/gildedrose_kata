@@ -6,17 +6,11 @@ class GildedRose {
   GildedRose(this.items);
 
   int minQuality = 0;
-  int maxQuality = 0;
+  int maxQuality = 50;
   int baseQualityChange = 1;
   void updateQuality() {
     for (var item in items) {
-      if (!isAgedBrie(item.name) && !isBackstage(item.name)) {
-        if (hasQuality(item.quality)) {
-          if (!isSulfuras(item.name)) {
-            item.quality = decreaseQuality(item.quality); //reasignar
-          }
-        }
-      } else {
+      if (isAgedBrie(item.name) || isBackstage(item.name)) {
         if (qualityLessLimit(item.quality)) {
           item.quality = increaseQuality(item.quality);
 
@@ -32,6 +26,12 @@ class GildedRose {
                 item.quality = increaseQuality(item.quality);
               }
             }
+          }
+        }
+      } else {
+        if (hasQuality(item.quality)) {
+          if (!isSulfuras(item.name)) {
+            item.quality = decreaseQuality(item.quality); //reasignar
           }
         }
       }
