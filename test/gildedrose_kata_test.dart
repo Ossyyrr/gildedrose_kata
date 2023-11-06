@@ -56,8 +56,21 @@ void main() {
     expect(item.quality, 0);
   });
 
+  test(
+      'should increase double Quality when Item Name is Aged Brie and SellIn <= 0',
+      () {
+    var randomSellIn = 0;
+    var randomQuality = 1;
+
+    Item item = Item('Aged Brie', randomSellIn, randomQuality);
+
+    GildedRose([item]).updateQuality();
+    expect(item.sellIn, randomSellIn - 1);
+    expect(item.quality, 3);
+  });
+
   test('should increase Quality when Item Name is Aged Brie', () {
-    var randomSellIn = Random().nextInt(5);
+    var randomSellIn = 3;
     var randomQuality = 1;
 
     Item item = Item('Aged Brie', randomSellIn, randomQuality);
@@ -66,7 +79,6 @@ void main() {
     expect(item.sellIn, randomSellIn - 1);
     expect(item.quality, 2);
   });
-
   test('should not increase Quality when Quality is 50', () {
     var randomSellIn = Random().nextInt(5);
     var randomQuality = 50;
