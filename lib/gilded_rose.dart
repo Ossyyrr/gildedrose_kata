@@ -6,6 +6,8 @@ class GildedRose {
   GildedRose(this.items);
 
   int minQuality = 0;
+  int maxQuality = 0;
+  int baseQualityChange = 1;
   void updateQuality() {
     for (var item in items) {
       if (!isAgedBrie(item.name) && !isBackstage(item.name)) {
@@ -63,9 +65,9 @@ class GildedRose {
   bool closeToExpire(int sellIn) => sellIn <= 10;
   int decreaseSellIn(int sellIn) => sellIn - 1;
 
-  bool qualityLessLimit(int quality) => quality < 50;
-  int decreaseQuality(int quality) => quality - 1;
-  int increaseQuality(int quality) => quality + 1;
+  bool qualityLessLimit(int quality) => quality < maxQuality;
+  int decreaseQuality(int quality) => quality - baseQualityChange;
+  int increaseQuality(int quality) => quality + baseQualityChange;
   bool hasQuality(int quality) => quality > minQuality;
 
   bool isSulfuras(String name) => name == "Sulfuras, Hand of Ragnaros";
