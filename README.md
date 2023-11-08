@@ -7,3 +7,5 @@ https://github.com/emilybache/GildedRose-Refactoring-Kata/blob/main/GildedRoseRe
 https://kata-log.rocks/gilded-rose-kata
 
 https://github.com/emilybache/GildedRose-Refactoring-Kata/tree/main/dart
+
+ flutter test
